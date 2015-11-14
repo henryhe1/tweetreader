@@ -12,7 +12,6 @@ Prints average happiness score per timezone and the total number of tweets per t
 Displays using happy_histogram.py GUI.
 
 Author: Henry He
-Student #: 250869172
 Course: CS1026A, Assignment 3
 Instructor: Jordan van Dyk
 Language: Python 3.4
