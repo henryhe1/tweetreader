@@ -77,14 +77,14 @@ def readTweets():
 
         #sorting tweets into timezone lists
 
-        if LAT_MIN < lat < LAT_MAX: #all timezones within lat range
-            if LONG_EASTERN > long > LONG_CENTRAL:
+        if LAT_MIN <= lat <= LAT_MAX: #all timezones within lat range
+            if LONG_EASTERN >= long > LONG_CENTRAL:
                 eastern.append(tweet)
-            elif LONG_CENTRAL > long > LONG_MOUNTAIN:
+            elif LONG_CENTRAL >= long > LONG_MOUNTAIN:
                 central.append(tweet)
-            elif LONG_MOUNTAIN > long > LONG_PACIFIC:
+            elif LONG_MOUNTAIN >= long > LONG_PACIFIC:
                 mountain.append(tweet)
-            elif LONG_PACIFIC > long > LONG_MIN:
+            elif LONG_PACIFIC >= long >= LONG_MIN:
                 pacific.append(tweet)
 
     g.close()
@@ -97,10 +97,11 @@ def calcHap(tweets, keywords):
     nKeywords = 0 # per tweet
     sent = 0 #sentiment value for each keyword per tweet
     score = 0 #per timezone
+    counter = 0
 
     for i in tweets:
         for j in keywords:
-            if j.upper() in i.upper(): # eliminates upper/lowercase dsicrepancy
+            if j.upper() in i.upper(): # eliminates upper/lowercase discrepancy
                 nKeywords += 1
                 sent += keywords[j]
                 # print(i, j, keywords[j], nKeywords, sent)
@@ -110,10 +111,11 @@ def calcHap(tweets, keywords):
             # print(score)
             nKeywords = 0 # reset per tweet
             sent = 0
+            counter += 1
 
-    if len(tweets) > 0: #eliminates div by zero error
-        score = score / len(tweets) # div by total number of tweets
-        return score, len(tweets) # return the two outputs
+    if counter > 0: #eliminates div by zero error
+        score = score / counter # div by total number of tweets
+        return score, counter # return the two outputs
     else:
         return -1 # no tweets in this timezone
 
@@ -159,6 +161,10 @@ def main():
     #
     # also few clarifications:
     # ignore tweets with no keywords...do you mean do not include in total tweets?
+    # greatest counted as two keywords with 'great' and 'greatest'...okay?
     # ignore tweets from outside the time zones
+    # lat restrictions
+    # graphics mark breakdown
+    # correct hap scores?
 
 main()

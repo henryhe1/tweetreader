@@ -88,7 +88,7 @@ def drawSimpleHistogram(eval,cval,mval,pval):
         # Draw bar for Pacific
         canvas.drawText(2, 4*huse+3*facew, "Pacific")
         drawSadFace(canvas, 80, (3+C)*huse+3*facew)
-        lngth = wuse*mval/10.0
+        lngth = wuse*pval/10.0
         canvas.setColor(120,120,120)
         canvas.setOutline("black")
         canvas.drawRectangle(barx, (3+C)*huse+3*facew, lngth, facew)
