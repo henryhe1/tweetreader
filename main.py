@@ -102,15 +102,18 @@ def calcHap(tweets, keywords):
     for i in tweets:
         tweetList = i.split(" ") # split the tweet into individual words
         for j in tweetList: #iterate through the tweet words
+            # print(j)
+            j = j.strip('\'"”“!,.;:][{}+=-_)(?#$%^&*~`\\') # didnt include @ because usernames don't indicate happiness at the moment of the tweet
+            # print(j)
             for k in keywords: #iterate through the keywords
                 if j.upper() == k.upper(): # eliminates upper/lowercase discrepancy, use == instead of "in" to avoid double counting keywords like 'greatest'
                     nKeywords += 1
                     sent += keywords[k] # sentiment value per tweet
-                    #print(i, k, keywords[j], nKeywords, sent)
+                    print(i, k, keywords[k], nKeywords, sent)
 
         if nKeywords > 0: #eliminates div by zero error
             score = score + (sent/nKeywords)
-            #print(score)
+            print(score)
             nKeywords = 0 # reset per tweet
             sent = 0
             counter += 1
