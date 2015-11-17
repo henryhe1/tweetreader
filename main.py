@@ -77,7 +77,7 @@ def readTweets():
 
         #sorting tweets into timezone lists
 
-        if LAT_MIN <= lat <= LAT_MAX: #all timezones within lat range
+        if LAT_MIN <= lat <= LAT_MAX: #all timezones within lat range ... removed tweets outside range
             if LONG_EASTERN >= long > LONG_CENTRAL:
                 eastern.append(tweet)
             elif LONG_CENTRAL >= long > LONG_MOUNTAIN:
@@ -158,15 +158,6 @@ def main():
 
 
     happy_histogram.drawSimpleHistogram(score1, score2, score3, score4)
-    #
-    # open("tweets.txt","r",encoding="utf-8")
-    #
-    # also few clarifications:
-    # ignore tweets with no keywords...do you mean do not include in total tweets?
-    # greatest counted as two keywords with 'great' and 'greatest'...okay?
-    # ignore tweets from outside the time zones
-    # lat restrictions
-    # graphics mark breakdown
-    # correct hap scores?
+
 
 main()
