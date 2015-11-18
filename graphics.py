@@ -28,7 +28,7 @@
 #  geometric shapes and color digital images. Complete documentation of the module
 #  is available at http://graphics.necaseweb.org.
 
-import Tkinter as tk
+import tkinter as tk
 
 ## This class defines a basic top level window that can be opened on the
 #  desktop and used to produce simple graphical drawings. It contains a
