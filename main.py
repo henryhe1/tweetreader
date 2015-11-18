@@ -16,7 +16,7 @@ Student #: 250869172
 Course: CS1026A, Assignment 3
 Instructor: Jordan van Dyk
 Language: Python 3.4
-Date modified: November 18 2015
+Date modified: November 18 2015.
 
 """
 
