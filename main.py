@@ -2,9 +2,13 @@
 This Python program reads tweets from a txt file and determines the timezone it was tweeted in.
 Then, using another text file of keywords and sentiment values, creates a dictionary.
 The program then assigns the sentiment values to the tweets which contain the keywords.
+Only full keywords were counted. Keywords which contained other keywords, such as 'greatest', were counted only once.
+Punctuation was stripped from each word.
 The happiness score per tweet is calculated by dividing the total sentiment value by the number of keywords found.
-Then, a happiness level per timezone is computed by dividing the total happiness score of all tweets by the number of tweets.
-Prints average happiness score per timezone and the total number of tweets per timezone.
+Then, a happiness level per timezone is computed by dividing the total happiness score of all tweets by the number of
+tweets with keywords.
+Tweets with no keywords and/or outside the timezone boundaries were ignored. Border cases included.
+Prints average happiness score per timezone and the total number of tweets with keywords per timezone.
 Displays using happy_histogram.py GUI.
 
 Author: Henry He
@@ -34,12 +38,12 @@ def readKeywords():
     try:
         f = open(keywordFile + ".txt", "r")
     except IOError:
-        print("Could not open file.")
+        print("Could not find file.") # exits if file doesn't exist
 
     keywordDict = {} #initialize new dictionary
 
     for line in f:
-        keywordList = line.split(",")
+        keywordList = line.split(",") #split using , as delimiter
         hapValue = keywordList[1]
         hapValue = int(hapValue.strip()) # cast to int and strip \n
 
@@ -57,9 +61,9 @@ def readTweets():
     try:
         g = open(tweetFile + ".txt", "r")
     except IOError:
-        print("Could not open file.")
+        print("Could not find file.") #exit if file cannot be found
 
-    #initialize new lists
+    #initialize new lists for each timezone
     eastern = []
     central = []
     mountain = []
@@ -67,12 +71,12 @@ def readTweets():
 
     for line in g:
 
-        tweetList = line.split(" ", 5) # keep tweet as one string for now
+        tweetList = line.split(" ", 5) # split line into 6 sections
         lat = tweetList[0]
-        lat = float(lat.strip("[,"))
+        lat = float(lat.strip("[,")) #strip bracket and cast to decimal
         long = tweetList[1]
-        long = float(long.strip("]"))
-        tweet = tweetList[5] # keep tweet as one string for now
+        long = float(long.strip("]")) #strip bracket and cast to decimal
+        tweet = tweetList[5] # keep tweet as one string, for now
         tweet = tweet.rstrip() # strip \n
 
         #sorting tweets into timezone lists
@@ -103,17 +107,17 @@ def calcHap(tweets, keywords):
         tweetList = i.split(" ") # split the tweet into individual words
         for j in tweetList: #iterate through the tweet words
             # print(j)
-            j = j.strip('\'"”“!,.;:][{}+=-_)(?#$%^&*~`\\') # didnt include @ because usernames don't indicate happiness at the moment of the tweet
+            j = j.strip('`1234567890~!#$%^&*()_+-={}|[]\\:”“";\':;?/>.<,') # didnt include @ because usernames don't indicate happiness at the moment of the tweet
             # print(j)
             for k in keywords: #iterate through the keywords
                 if j.upper() == k.upper(): # eliminates upper/lowercase discrepancy, use == instead of "in" to avoid double counting keywords like 'greatest'
                     nKeywords += 1
                     sent += keywords[k] # sentiment value per tweet
-                    print(i, k, keywords[k], nKeywords, sent)
+                    #print(i, k, keywords[k], nKeywords, sent)
 
         if nKeywords > 0: #eliminates div by zero error
             score = score + (sent/nKeywords)
-            print(score)
+            #print(score)
             nKeywords = 0 # reset per tweet
             sent = 0
             counter += 1
@@ -137,25 +141,29 @@ def main():
 
     print("\neastern")
     score1, numTweets = calcHap(eastern, keywordDict)
-    print(round(score1,2), numTweets)
+    print("%-15s %5.2f" % ("happiness", score1))
+    print("%-15s %5.0d" % ("total tweets", numTweets))
     # for n in eastern:
     #     print(n)
 
     print("\ncentral")
     score2, numTweets = calcHap(central, keywordDict)
-    print(round(score2,2), numTweets)
+    print("%-15s %5.2f" % ("happiness", score2))
+    print("%-15s %5.0d" % ("total tweets", numTweets))
     # for n in central:
     #     print(n)
 
     print("\nmountain")
     score3, numTweets = calcHap(mountain, keywordDict)
-    print(round(score3,2), numTweets)
+    print("%-15s %5.2f" % ("happiness", score3))
+    print("%-15s %5.0d" % ("total tweets", numTweets))
     # for n in mountain:
     #     print(n)
 
     print("\npacific")
     score4, numTweets = calcHap(pacific, keywordDict)
-    print(round(score4,2), numTweets)
+    print("%-15s %5.2f" % ("happiness", score4))
+    print("%-15s %5.0d" % ("total tweets", numTweets))
     # for n in pacific:
     #     print(n)
 
